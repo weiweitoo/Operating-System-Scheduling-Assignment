@@ -1,33 +1,33 @@
 var Example = {
 	Processes: [
-	{Name: "P0", BurstTime: 10, LeftTime: 10, ArrivalTime: 8 , Piority: 1},
-	{Name: "P1", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 4 , Piority: 2},
-	{Name: "P2", BurstTime: 8 , LeftTime: 8 , ArrivalTime: 10, Piority: 3},
-	{Name: "P3", BurstTime: 2 , LeftTime: 2 , ArrivalTime: 4 , Piority: 4},
-	{Name: "P4", BurstTime: 12, LeftTime: 12, ArrivalTime: 0 , Piority: 5}
+	{Name: "P0", BurstTime: 10, LeftTime: 10, ArrivalTime: 8 , Priority: 1},
+	{Name: "P1", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 4 , Priority: 2},
+	{Name: "P2", BurstTime: 8 , LeftTime: 8 , ArrivalTime: 10, Priority: 3},
+	{Name: "P3", BurstTime: 2 , LeftTime: 2 , ArrivalTime: 4 , Priority: 4},
+	{Name: "P4", BurstTime: 12, LeftTime: 12, ArrivalTime: 0 , Priority: 5}
 	]
 };
 
 var AssignmentExample = {
 	Processes: [
-	{Name: "P0", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 0 , Piority: 3},
-	{Name: "P1", BurstTime: 4 , LeftTime: 4 , ArrivalTime: 1 , Piority: 3},
-	{Name: "P2", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 5 , Piority: 1},
-	{Name: "P3", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 6 , Piority: 1},
-	{Name: "P4", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 7 , Piority: 5},
-	{Name: "P5", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 8 , Piority: 6}
+	{Name: "P0", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 0 , Priority: 3},
+	{Name: "P1", BurstTime: 4 , LeftTime: 4 , ArrivalTime: 1 , Priority: 3},
+	{Name: "P2", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 5 , Priority: 1},
+	{Name: "P3", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 6 , Priority: 1},
+	{Name: "P4", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 7 , Priority: 5},
+	{Name: "P5", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 8 , Priority: 6}
 	]
 };
 
 //Input for Round Robin
 var ExampleRR = {
 	Processes: [
-	{Name: "P0", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 0 , StopTime: 0 , Piority: 3},
-	{Name: "P1", BurstTime: 4 , LeftTime: 4 , ArrivalTime: 1 , StopTime: 1 , Piority: 3},
-	{Name: "P2", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 5 , StopTime: 5 , Piority: 1},
-	{Name: "P3", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 6 , StopTime: 6 , Piority: 1},
-	{Name: "P4", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 7 , StopTime: 7 , Piority: 5},
-	{Name: "P5", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 8 , StopTime: 8 , Piority: 6}
+	{Name: "P0", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 0 , StopTime: 0 , Priority: 3},
+	{Name: "P1", BurstTime: 4 , LeftTime: 4 , ArrivalTime: 1 , StopTime: 1 , Priority: 3},
+	{Name: "P2", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 5 , StopTime: 5 , Priority: 1},
+	{Name: "P3", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 6 , StopTime: 6 , Priority: 1},
+	{Name: "P4", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 7 , StopTime: 7 , Priority: 5},
+	{Name: "P5", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 8 , StopTime: 8 , Priority: 6}
 	], Quantum: 2
 };
 
@@ -49,7 +49,7 @@ function Process_FCFS(Input)
 			var TempIndex = -1;
 			for (var i = 0;i < ProQueue.Processes.length;i++)
 			{
-				var IPio = ProQueue.Processes[i].Piority;
+				var IPio = ProQueue.Processes[i].Priority;
 				if (ProQueue.Processes[i].ArrivalTime > TimeFlow)
 				{
 					continue;
@@ -91,8 +91,8 @@ function Process_FCFS(Input)
 			}
 			if (ProQueue.Processes[i].ArrivalTime == TimeFlow)
 			{
-				var CPio = ProQueue.Processes[i].Piority;
-				var OPio = ProQueue.Processes[CurrentPro].Piority;
+				var CPio = ProQueue.Processes[i].Priority;
+				var OPio = ProQueue.Processes[CurrentPro].Priority;
 				if (CPio < OPio)
 				{
 					CurrentPro = i;
@@ -162,7 +162,7 @@ function Process_RR(Input)
 			var TempIndex = -1;
 			for (var i = 0;i < ProQueue.Processes.length;i++)
 			{
-				var IPio = ProQueue.Processes[i].Piority;
+				var IPio = ProQueue.Processes[i].Priority;
 				if (ProQueue.Processes[i].ArrivalTime > TimeFlow)
 				{
 					continue;
@@ -276,8 +276,8 @@ function Process_SRTN(Input)
 				}
 				if (TempTL == ITLeft)
 				{
-					var CPio = ProQueue.Processes[i].Piority;
-					var OPio = ProQueue.Processes[TempIndex].Piority;
+					var CPio = ProQueue.Processes[i].Priority;
+					var OPio = ProQueue.Processes[TempIndex].Priority;
 					if (CPio < OPio)
 					{
 						TempTL = ITLeft
@@ -319,8 +319,8 @@ function Process_SRTN(Input)
 				}
 				if (CBTime == OBTime)
 				{
-					var CPio = ProQueue.Processes[i].Piority;
-					var OPio = ProQueue.Processes[CurrentPro].Piority;
+					var CPio = ProQueue.Processes[i].Priority;
+					var OPio = ProQueue.Processes[CurrentPro].Priority;
 					if (CPio <= OPio)
 					{
 						Preempted = true;
@@ -385,11 +385,11 @@ function Three_level_queue(Input){
 	var queue3 = {Processes: []};
 
 	for(var i=0;i<threeLevelQueue.Processes.length;i++){
-		if(threeLevelQueue.Processes[i].Piority <= 2){
+		if(threeLevelQueue.Processes[i].Priority <= 2){
 			queue1.Processes.push(threeLevelQueue1.Processes[i]);
-		}if(threeLevelQueue.Processes[i].Piority <= 4){
+		}if(threeLevelQueue.Processes[i].Priority <= 4){
 			queue2.Processes.push(threeLevelQueue2.Processes[i]);
-		}if(threeLevelQueue.Processes[i].Piority <= 6){
+		}if(threeLevelQueue.Processes[i].Priority <= 6){
 			queue3.Processes.push(threeLevelQueue3.Processes[i]);
 		}
 	}
@@ -402,24 +402,24 @@ function Three_level_queue(Input){
 
 
 	for (var j=0;j<totalLength;j++){
-		var dummyQ1 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Piority: 2};
+		var dummyQ1 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 2};
 		queue1.Processes.push(dummyQ1);
 		
-		var dummyQ2 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Piority: 4};
+		var dummyQ2 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 4};
 		queue2.Processes.push(dummyQ2);
 
-		var dummyQ3 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Piority: 6};
+		var dummyQ3 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 6};
 		queue3.Processes.push(dummyQ3);
 	}
 
 	for(var q2=0;q2<queue2.Processes.length;q2++){
-		if(queue2.Processes[q2].Piority < 3){
+		if(queue2.Processes[q2].Priority < 3){
 			queue2.Processes[q2].Name = "X";
 		}
 	}
 
 	for(var q3=0;q3<queue3.Processes.length;q3++){
-		if(queue3.Processes[q3].Piority < 5){
+		if(queue3.Processes[q3].Priority < 5){
 			queue3.Processes[q3].Name = "X";
 		}
 	}
