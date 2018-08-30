@@ -373,6 +373,63 @@ function Process_SRTN(Input)
 	return Result;
 }
 
+function Three_level_queue(Input){
+
+	var threeLevelQueue = Input;
+	
+	var threeLevelQueue1 = jQuery.extend(true, {}, threeLevelQueue);
+	var threeLevelQueue2 = jQuery.extend(true, {}, threeLevelQueue);
+	var threeLevelQueue3 = jQuery.extend(true, {}, threeLevelQueue);
+	var queue1 = {Processes: [], Quantum: 2};
+	var queue2 = {Processes: []};
+	var queue3 = {Processes: []};
+
+	for(var i=0;i<threeLevelQueue.Processes.length;i++){
+		if(threeLevelQueue.Processes[i].Piority <= 2){
+			queue1.Processes.push(threeLevelQueue1.Processes[i]);
+		}if(threeLevelQueue.Processes[i].Piority <= 4){
+			queue2.Processes.push(threeLevelQueue2.Processes[i]);
+		}if(threeLevelQueue.Processes[i].Piority <= 6){
+			queue3.Processes.push(threeLevelQueue3.Processes[i]);
+		}
+	}
+	var totalLength = 0;
+	for(var n=0; n<threeLevelQueue.Processes.length;n++){
+		totalLength += threeLevelQueue.Processes[n].BurstTime;
+	}
+
+
+
+
+	for (var j=0;j<totalLength;j++){
+		var dummyQ1 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Piority: 2};
+		queue1.Processes.push(dummyQ1);
+		
+		var dummyQ2 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Piority: 4};
+		queue2.Processes.push(dummyQ2);
+
+		var dummyQ3 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Piority: 6};
+		queue3.Processes.push(dummyQ3);
+	}
+
+	for(var q2=0;q2<queue2.Processes.length;q2++){
+		if(queue2.Processes[q2].Piority < 3){
+			queue2.Processes[q2].Name = "X";
+		}
+	}
+
+	for(var q3=0;q3<queue3.Processes.length;q3++){
+		if(queue3.Processes[q3].Piority < 5){
+			queue3.Processes[q3].Name = "X";
+		}
+	}
+
+
+	// var returnQ1 = Process_RR(squeue1);
+	return [Process_RR(queue1), Process_FCFS(queue2), Process_FCFS(queue3)];
+
+}
+
 console.log(Process_FCFS(Example));
 console.log(Process_RR(ExampleRR));
 console.log(Process_SRTN(AssignmentExample));
