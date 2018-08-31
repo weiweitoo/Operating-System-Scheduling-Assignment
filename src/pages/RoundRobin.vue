@@ -1,21 +1,43 @@
 <template>
 	<el-col :span="21">
-		<pie-bar></pie-bar>
-		<table-input @clicked="onClickChild" :quantum="true"></table-input>
+		<pie-bar :data="Data"></pie-bar>
+		<table-input @clicked="getInput" :Quantum="true"></table-input>
 	</el-col>
 </template>
 
 <script>
+import {Process_RR} from "./../module/OSBackend.js";
 export default {
   name: 'RoundRobin',
+  data: function(){
+  	return {
+  		Data:[
+				{
+					'name' : 'P0',
+					'endTime' : 4,
+					'burstTime' : 4
+				},
+				{
+					'name' : 'P2',
+					'endTime' : 7,
+					'burstTime' : 3
+				},
+				{
+					'name' : 'P3',
+					'endTime' : 12,
+					'burstTime' : 5
+				}
+			],
+  	}
+  },
   methods:{
-  	onClickChild (value) {
-		console.log(value) // someValue
+  	getInput(value,quantum) {
+			console.log(Process_RR(value,quantum));
+			console.log(value);
     }
   }
 }
 </script>
 
 <style type="text/css">
-	
 </style>

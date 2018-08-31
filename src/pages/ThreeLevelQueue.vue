@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import {Process_FCFS} from "./../module/OSBackend.js";
+import {Three_level_queue} from "./../module/OSBackend.js";
 export default {
-  name: 'FCFS',
+  name: 'RoundRobin',
   data: function(){
   	return {
   		Data:[

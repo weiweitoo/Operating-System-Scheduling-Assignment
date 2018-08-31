@@ -1,9 +1,9 @@
 <template>
 	<div id="gantt-chart" class="custom-scrollbar">
-		<div v-for="answer in answers" class="gantt-chart-item">
-			{{ answer.name }}
+		<div v-for="cell in tableData" class="gantt-chart-item">
+			{{ cell.name }}
 			<div class="time">
-				{{ answer.endTime }}
+				{{ cell.endTime }}
 			</div>
 		</div>
 	</div>
@@ -14,200 +14,22 @@ export default {
   name: 'piebar',
   data: function() {
     return {
-    	answers:[
-	       {
-	         'name' : 'P1',
-	         'endTime' : 4,
-	         'burstTime' : 4
-	       },
-	       {
-	         'name' : 'P2',
-	         'endTime' : 7,
-	         'burstTime' : 3
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 12,
-	         'burstTime' : 5
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 14,
-	         'burstTime' : 2
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 15,
-	         'burstTime' : 1
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 19,
-	         'burstTime' : 4
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 23,
-	         'burstTime' : 4
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 25,
-	         'burstTime' : 2
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 26,
-	         'burstTime' : 1
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 27,
-	         'burstTime' : 1
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 30,
-	         'burstTime' : 3
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 40,
-	         'burstTime' : 10
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 43,
-	         'burstTime' : 3
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       },
-	       {
-	         'name' : 'P3',
-	         'endTime' : 143,
-	         'burstTime' : 100
-	       }
-	     ],
-	     totalTime : 0,
+	    totalTime : 0,
     }
+  },
+  props:['data'],
+  computed:{
+  	tableData: function(){
+  		return this.data;
+  	}
   },
   mounted(){
   	// Get total endtime
-  	this.totalTime += this.answers[this.answers.length-1].endTime;
-
-  	console.log(this.totalTime);
+  	this.totalTime += this.data[this.data.length-1].endTime;
   	var block = document.getElementsByClassName("gantt-chart-item");
   	for (var i = 0; i < block.length; i++) {
   		block[i].style.backgroundColor = this.randomLightColor();
-  		block[i].style.width = 70 + (this.answers[i].burstTime/this.totalTime * 60) + "px";
+  		block[i].style.width = 70 + (this.data[i].burstTime/this.totalTime * 60) + "px";
   	}
   },
   methods:{
