@@ -1,39 +1,59 @@
-var Example = {
-	Processes: [
-	{Name: "P0", BurstTime: 10, LeftTime: 10, ArrivalTime: 8 , Priority: 1},
-	{Name: "P1", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 4 , Priority: 2},
-	{Name: "P2", BurstTime: 8 , LeftTime: 8 , ArrivalTime: 10, Priority: 3},
-	{Name: "P3", BurstTime: 2 , LeftTime: 2 , ArrivalTime: 4 , Priority: 4},
-	{Name: "P4", BurstTime: 12, LeftTime: 12, ArrivalTime: 0 , Priority: 5}
-	]
-};
+var Example = [
+	{Name: "P0", BurstTime: 10, ArrivalTime: 8 , Priority: 1},
+	{Name: "P1", BurstTime: 6 , ArrivalTime: 4 , Priority: 2},
+	{Name: "P2", BurstTime: 8 , ArrivalTime: 10, Priority: 3},
+	{Name: "P3", BurstTime: 2 , ArrivalTime: 4 , Priority: 4},
+	{Name: "P4", BurstTime: 12, ArrivalTime: 0 , Priority: 5}
+];//LeftTime
 
-var AssignmentExample = {
-	Processes: [
-	{Name: "P0", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 0 , Priority: 3},
-	{Name: "P1", BurstTime: 4 , LeftTime: 4 , ArrivalTime: 1 , Priority: 3},
-	{Name: "P2", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 5 , Priority: 1},
-	{Name: "P3", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 6 , Priority: 1},
-	{Name: "P4", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 7 , Priority: 5},
-	{Name: "P5", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 8 , Priority: 6}
-	]
-};
+var AssignmentExample = [
+	{Name: "P0", BurstTime: 6 , ArrivalTime: 0 , Priority: 3},
+	{Name: "P1", BurstTime: 4 , ArrivalTime: 1 , Priority: 3},
+	{Name: "P2", BurstTime: 6 , ArrivalTime: 5 , Priority: 1},
+	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Priority: 1},
+	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Priority: 5},
+	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Priority: 6}
+];//LeftTime
 
 //Input for Round Robin
-var ExampleRR = {
-	Processes: [
-	{Name: "P0", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 0 , StopTime: 0 , Priority: 3},
-	{Name: "P1", BurstTime: 4 , LeftTime: 4 , ArrivalTime: 1 , StopTime: 1 , Priority: 3},
-	{Name: "P2", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 5 , StopTime: 5 , Priority: 1},
-	{Name: "P3", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 6 , StopTime: 6 , Priority: 1},
-	{Name: "P4", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 7 , StopTime: 7 , Priority: 5},
-	{Name: "P5", BurstTime: 6 , LeftTime: 6 , ArrivalTime: 8 , StopTime: 8 , Priority: 6}
-	], Quantum: 2
-};
+var ExampleRR = [
+	{Name: "P0", BurstTime: 6 , ArrivalTime: 0 , Priority: 3},
+	{Name: "P1", BurstTime: 4 , ArrivalTime: 1 , Priority: 3},
+	{Name: "P2", BurstTime: 6 , ArrivalTime: 5 , Priority: 1},
+	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Priority: 1},
+	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Priority: 5},
+	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Priority: 6}
+];//LeftTime, StopTime
 
-function Process_FCFS(Input)
+
+function Process_Repacker(Input, InQ = 0)
 {
-	var ProQueue = Input;
+	var ProQueue;
+	if (InQ <= 0)
+	{
+		ProQueue = {Processes: []};
+		for(var i = 0;i < Input.length;i++)
+		{
+			Input[i].LeftTime = Input[i].BurstTime;
+			ProQueue.Processes.push(Input[i]);
+		}
+	}
+	else
+	{
+		ProQueue = {Processes: [], Quantum: InQ};
+		for(var i = 0;i < Input.length;i++)
+		{
+			Input[i].LeftTime = Input[i].BurstTime;
+			Input[i].StopTime = Input[i].ArrivalTime;
+			ProQueue.Processes.push(Input[i]);
+		}
+	}
+	return ProQueue
+}
+
+export function Process_FCFS(Input)
+{
+	var ProQueue = Process_Repacker(Input);
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
 	
@@ -107,20 +127,23 @@ function Process_FCFS(Input)
 			RunTime = 0;
 		}
 		//Run process
-		ProQueue.Processes[CurrentPro].LeftTime -= 1;
-		RunTime += 1;
-		//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
-		//Process complete
-		if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
+		if (CurrentPro >= 0)
 		{
-			var OPro = ProQueue.Processes.splice(CurrentPro,1)[0];
-			var OName = OPro.Name;
-			var OInter = TimeFlow - OPro.ArrivalTime + 1;
-			var OWait = OInter  - OPro.BurstTime;
-			ProGanC.Processes.push({Name: OName, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
-			ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
-			RunTime = 0;
-			CurrentPro = -1;
+			ProQueue.Processes[CurrentPro].LeftTime -= 1;
+			RunTime += 1;
+			//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
+			//Process complete
+			if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
+			{
+				var OPro = ProQueue.Processes.splice(CurrentPro,1)[0];
+				var OName = OPro.Name;
+				var OInter = TimeFlow - OPro.ArrivalTime + 1;
+				var OWait = OInter  - OPro.BurstTime;
+				ProGanC.Processes.push({Name: OName, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
+				ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
+				RunTime = 0;
+				CurrentPro = -1;
+			}
 		}
 		//Time flows
 		TimeFlow += 1;
@@ -144,13 +167,14 @@ function Process_FCFS(Input)
 	return Result;
 }
 
-function Process_RR(Input)
+export function Process_RR(Input, InQ)
 {
-	var ProQueue = Input;
+	var ProQueue = Process_Repacker(Input, InQ);
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
 	
 	var TimeFlow = 0;
+	var RunTime = 0;
 	var CurrentPro = -1;
 	var QuantumCount = ProQueue.Quantum;
 	while(ProQueue.Processes.length > 0)
@@ -194,28 +218,69 @@ function Process_RR(Input)
 			CurrentPro = TempIndex;
 		}
 		//Run process
-		ProQueue.Processes[CurrentPro].LeftTime -= 1;
-		QuantumCount -= 1;
-		//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
-		//Process complete
-		if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
+		if (CurrentPro >= 0)
 		{
-			var OPro = ProQueue.Processes.splice(CurrentPro,1)[0];
-			var OName = OPro.Name;
-			var OInter = TimeFlow - OPro.ArrivalTime + 1;
-			var OWait = OInter  - OPro.BurstTime;
-			ProGanC.Processes.push({Name: OName, EndTime: TimeFlow + 1});
-			ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
-			QuantumCount = ProQueue.Quantum;
-			CurrentPro = -1;
-		}
-		//Quantum count reach zero
-		if (QuantumCount <= 0)
-		{
-			ProQueue.Processes[CurrentPro].StopTime = TimeFlow + 1;
-			ProGanC.Processes.push({Name: ProQueue.Processes[CurrentPro].Name, EndTime: TimeFlow + 1});
-			QuantumCount = ProQueue.Quantum;
-			CurrentPro = -1;
+			ProQueue.Processes[CurrentPro].LeftTime -= 1;
+			QuantumCount -= 1;
+			RunTime += 1;
+			//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
+			//Process complete
+			if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
+			{
+				var OPro = ProQueue.Processes.splice(CurrentPro,1)[0];
+				var OName = OPro.Name;
+				var OInter = TimeFlow - OPro.ArrivalTime + 1;
+				var OWait = OInter  - OPro.BurstTime;
+				//Check last process and merge them they are the same
+				if (ProGanC.Processes.length > 0)
+				{
+					var LastName = ProGanC.Processes[ProGanC.Processes.length - 1].Name;
+					if (LastName === OName)
+					{
+						ProGanC.Processes[ProGanC.Processes.length - 1].EndTime = TimeFlow + 1;
+						ProGanC.Processes[ProGanC.Processes.length - 1].ProcessedTime += RunTime;
+					}
+					else
+					{
+						ProGanC.Processes.push({Name: OName, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
+					}
+				}
+				else
+				{
+					ProGanC.Processes.push({Name: OName, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
+				}
+				ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
+				QuantumCount = ProQueue.Quantum;
+				CurrentPro = -1;
+				RunTime = 0;
+			}
+			//Quantum count reach zero
+			if (QuantumCount <= 0)
+			{
+				ProQueue.Processes[CurrentPro].StopTime = TimeFlow + 1;
+				
+				//Check last process and merge them they are the same
+				if (ProGanC.Processes.length > 0)
+				{
+					var LastName = ProGanC.Processes[ProGanC.Processes.length - 1].Name;
+					if (LastName === ProQueue.Processes[CurrentPro].Name)
+					{
+						ProGanC.Processes[ProGanC.Processes.length - 1].EndTime = TimeFlow + 1;
+						ProGanC.Processes[ProGanC.Processes.length - 1].ProcessedTime += RunTime;
+					}
+					else
+					{
+						ProGanC.Processes.push({Name: ProQueue.Processes[CurrentPro].Name, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
+					}
+				}
+				else
+				{
+					ProGanC.Processes.push({Name: ProQueue.Processes[CurrentPro].Name, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
+				}
+				QuantumCount = ProQueue.Quantum;
+				CurrentPro = -1;
+				RunTime = 0;
+			}
 		}
 		//Time flows
 		TimeFlow += 1;
@@ -239,9 +304,9 @@ function Process_RR(Input)
 	return Result;
 }
 
-function Process_SRTN(Input)
+export function Process_SRTN(Input)
 {
-	var ProQueue = Input;
+	var ProQueue = Process_Repacker(Input);
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
 	
@@ -336,20 +401,23 @@ function Process_SRTN(Input)
 			RunTime = 0;
 		}
 		//Run process
-		ProQueue.Processes[CurrentPro].LeftTime -= 1;
-		RunTime += 1;
-		//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
-		//Process complete
-		if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
+		if (CurrentPro >= 0)
 		{
-			var OPro = ProQueue.Processes.splice(CurrentPro,1)[0];
-			var OName = OPro.Name;
-			var OInter = TimeFlow - OPro.ArrivalTime + 1;
-			var OWait = OInter  - OPro.BurstTime;
-			ProGanC.Processes.push({Name: OName, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
-			ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
-			RunTime = 0;
-			CurrentPro = -1;
+			ProQueue.Processes[CurrentPro].LeftTime -= 1;
+			RunTime += 1;
+			//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
+			//Process complete
+			if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
+			{
+				var OPro = ProQueue.Processes.splice(CurrentPro,1)[0];
+				var OName = OPro.Name;
+				var OInter = TimeFlow - OPro.ArrivalTime + 1;
+				var OWait = OInter  - OPro.BurstTime;
+				ProGanC.Processes.push({Name: OName, EndTime: TimeFlow + 1, ProcessedTime: RunTime});
+				ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
+				RunTime = 0;
+				CurrentPro = -1;
+			}
 		}
 		//Time flows
 		TimeFlow += 1;
@@ -373,7 +441,7 @@ function Process_SRTN(Input)
 	return Result;
 }
 
-function Three_level_queue(Input){
+export function Three_level_queue(Input){
 
 	var threeLevelQueue = Input;
 	
@@ -430,6 +498,4 @@ function Three_level_queue(Input){
 
 }
 
-console.log(Process_FCFS(Example));
-console.log(Process_RR(ExampleRR));
-console.log(Process_SRTN(AssignmentExample));
+export default {Process_FCFS, Process_RR, Process_SRTN, Three_level_queue}
