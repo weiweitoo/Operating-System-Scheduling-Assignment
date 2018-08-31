@@ -1,4 +1,5 @@
 var Example = [
+<<<<<<< HEAD
 	{Name: "P0", BurstTime: 10, ArrivalTime: 8 , Priority: 1},
 	{Name: "P1", BurstTime: 6 , ArrivalTime: 4 , Priority: 2},
 	{Name: "P2", BurstTime: 8 , ArrivalTime: 10, Priority: 3},
@@ -13,20 +14,46 @@ var AssignmentExample = [
 	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Priority: 1},
 	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Priority: 5},
 	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Priority: 6}
+=======
+	{Name: "P0", BurstTime: 10, ArrivalTime: 8 , Piority: 1},
+	{Name: "P1", BurstTime: 6 , ArrivalTime: 4 , Piority: 2},
+	{Name: "P2", BurstTime: 8 , ArrivalTime: 10, Piority: 3},
+	{Name: "P3", BurstTime: 2 , ArrivalTime: 4 , Piority: 4},
+	{Name: "P4", BurstTime: 12, ArrivalTime: 0 , Piority: 5}
+];//LeftTime
+
+var AssignmentExample = [
+	{Name: "P0", BurstTime: 6 , ArrivalTime: 0 , Piority: 3},
+	{Name: "P1", BurstTime: 4 , ArrivalTime: 1 , Piority: 3},
+	{Name: "P2", BurstTime: 6 , ArrivalTime: 5 , Piority: 1},
+	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Piority: 1},
+	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Piority: 5},
+	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Piority: 6}
+>>>>>>> 24ce6b4c35625f6de68507e5b995510b969ff97f
 ];//LeftTime
 
 //Input for Round Robin
 var ExampleRR = [
+<<<<<<< HEAD
 	{Name: "P0", BurstTime: 6 , ArrivalTime: 0 , Priority: 3},
 	{Name: "P1", BurstTime: 4 , ArrivalTime: 1 , Priority: 3},
 	{Name: "P2", BurstTime: 6 , ArrivalTime: 5 , Priority: 1},
 	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Priority: 1},
 	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Priority: 5},
 	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Priority: 6}
+=======
+	{Name: "P0", BurstTime: 6 , ArrivalTime: 0 , Piority: 3},
+	{Name: "P1", BurstTime: 4 , ArrivalTime: 1 , Piority: 3},
+	{Name: "P2", BurstTime: 6 , ArrivalTime: 5 , Piority: 1},
+	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Piority: 1},
+	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Piority: 5},
+	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Piority: 6}
+>>>>>>> 24ce6b4c35625f6de68507e5b995510b969ff97f
 ];//LeftTime, StopTime
 
 
 function Process_Repacker(Input, InQ = 0)
+<<<<<<< HEAD
 {
 	var ProQueue;
 	if (InQ <= 0)
@@ -53,6 +80,36 @@ function Process_Repacker(Input, InQ = 0)
 
 export function Process_FCFS(Input)
 {
+=======
+{
+	var ProQueue;
+	if (InQ <= 0)
+	{
+		console.log("A");
+		ProQueue = {Processes: []};
+		for(var i = 0;i < Input.length;i++)
+		{
+			Input[i].LeftTime = Input[i].BurstTime;
+			ProQueue.Processes.push(Input[i]);
+		}
+	}
+	else
+	{
+		console.log("B");
+		ProQueue = {Processes: [], Quantum: InQ};
+		for(var i = 0;i < Input.length;i++)
+		{
+			Input[i].LeftTime = Input[i].BurstTime;
+			Input[i].StopTime = Input[i].ArrivalTime;
+			ProQueue.Processes.push(Input[i]);
+		}
+	}
+	return ProQueue
+}
+
+export function Process_FCFS(Input)
+{
+>>>>>>> 24ce6b4c35625f6de68507e5b995510b969ff97f
 	var ProQueue = Process_Repacker(Input);
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
@@ -69,7 +126,7 @@ export function Process_FCFS(Input)
 			var TempIndex = -1;
 			for (var i = 0;i < ProQueue.Processes.length;i++)
 			{
-				var IPio = ProQueue.Processes[i].Priority;
+				var IPio = ProQueue.Processes[i].Piority;
 				if (ProQueue.Processes[i].ArrivalTime > TimeFlow)
 				{
 					continue;
@@ -111,8 +168,8 @@ export function Process_FCFS(Input)
 			}
 			if (ProQueue.Processes[i].ArrivalTime == TimeFlow)
 			{
-				var CPio = ProQueue.Processes[i].Priority;
-				var OPio = ProQueue.Processes[CurrentPro].Priority;
+				var CPio = ProQueue.Processes[i].Piority;
+				var OPio = ProQueue.Processes[CurrentPro].Piority;
 				if (CPio < OPio)
 				{
 					CurrentPro = i;
@@ -186,7 +243,7 @@ export function Process_RR(Input, InQ)
 			var TempIndex = -1;
 			for (var i = 0;i < ProQueue.Processes.length;i++)
 			{
-				var IPio = ProQueue.Processes[i].Priority;
+				var IPio = ProQueue.Processes[i].Piority;
 				if (ProQueue.Processes[i].ArrivalTime > TimeFlow)
 				{
 					continue;
@@ -341,8 +398,8 @@ export function Process_SRTN(Input)
 				}
 				if (TempTL == ITLeft)
 				{
-					var CPio = ProQueue.Processes[i].Priority;
-					var OPio = ProQueue.Processes[TempIndex].Priority;
+					var CPio = ProQueue.Processes[i].Piority;
+					var OPio = ProQueue.Processes[TempIndex].Piority;
 					if (CPio < OPio)
 					{
 						TempTL = ITLeft
@@ -384,8 +441,8 @@ export function Process_SRTN(Input)
 				}
 				if (CBTime == OBTime)
 				{
-					var CPio = ProQueue.Processes[i].Priority;
-					var OPio = ProQueue.Processes[CurrentPro].Priority;
+					var CPio = ProQueue.Processes[i].Piority;
+					var OPio = ProQueue.Processes[CurrentPro].Piority;
 					if (CPio <= OPio)
 					{
 						Preempted = true;
@@ -441,6 +498,7 @@ export function Process_SRTN(Input)
 	return Result;
 }
 
+<<<<<<< HEAD
 export function Three_level_queue(Input){
 
 	var threeLevelQueue = Input;
@@ -499,3 +557,6 @@ export function Three_level_queue(Input){
 }
 
 export default {Process_FCFS, Process_RR, Process_SRTN, Three_level_queue}
+=======
+export default {Process_FCFS,Process_RR,Process_SRTN}
+>>>>>>> 24ce6b4c35625f6de68507e5b995510b969ff97f
