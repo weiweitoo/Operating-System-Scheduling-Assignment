@@ -53,7 +53,7 @@ function Process_Repacker(Input, InQ = 0)
 	return ProQueue
 }
 
-function Process_FCFS(Input)
+export function Process_FCFS(Input)
 {
 	var ProQueue = Process_Repacker(Input);
 	var ProGanC = {Processes: []};
@@ -169,7 +169,7 @@ function Process_FCFS(Input)
 	return Result;
 }
 
-function Process_RR(Input, InQ)
+export function Process_RR(Input, InQ)
 {
 	var ProQueue = Process_Repacker(Input, InQ);
 	var ProGanC = {Processes: []};
@@ -306,7 +306,7 @@ function Process_RR(Input, InQ)
 	return Result;
 }
 
-function Process_SRTN(Input)
+export function Process_SRTN(Input)
 {
 	var ProQueue = Process_Repacker(Input);
 	var ProGanC = {Processes: []};
@@ -443,6 +443,4 @@ function Process_SRTN(Input)
 	return Result;
 }
 
-console.log(Process_FCFS(Example));
-console.log(Process_RR(ExampleRR, 2));
-console.log(Process_SRTN(AssignmentExample));
+export default {Process_FCFS,Process_RR,Process_SRTN}

@@ -32,7 +32,7 @@ export default {
   },
   methods:{
   	getInput(value,quantum) {
-			// Process_RR(value,quantum);
+			console.log(Process_RR(value,quantum));
 			console.log(value);
     }
   }

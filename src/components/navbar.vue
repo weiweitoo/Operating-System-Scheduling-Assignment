@@ -14,8 +14,16 @@
         <span slot="title">FCFS</span>
       </el-menu-item>
       <el-menu-item index="2" route="round-robin">
-        <i class="el-icon-setting"></i>
+        <i class="el-icon-menu"></i>
         <span slot="title">Round Robin</span>
+      </el-menu-item>
+      <el-menu-item index="3" route="srtn">
+        <i class="el-icon-menu"></i>
+        <span slot="title">SRTN</span>
+      </el-menu-item>
+      <el-menu-item index="4" route="three-level-queue">
+        <i class="el-icon-menu"></i>
+        <span slot="title">Three Level</span>
       </el-menu-item>
     </el-menu>
   </el-col>
