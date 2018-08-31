@@ -32,8 +32,8 @@ export default {
   },
   methods:{
   	getInput(value,quantum) {
-			console.log(Process_RR(value,quantum));
-			console.log(value);
+			this.data = Process_RR(value,quantum);
+			console.log(this.data);
     }
   }
 }

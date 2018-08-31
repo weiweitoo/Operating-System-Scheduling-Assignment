@@ -1,7 +1,7 @@
 <template>
   <el-col :span="3" id="side-nav-bar">
     <el-menu
-      default-active="2"
+      default-active="1"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -9,19 +9,23 @@
       text-color="#fff"
       background-color="#545c64"
       active-text-color="#ffd04b">
-      <el-menu-item index="1" route="fcfs">
+      <el-menu-item index="1" route="/">
+        <i class="el-icon-menu"></i>
+        <span slot="title">Home</span>
+      </el-menu-item>
+      <el-menu-item index="2" route="/fcfs">
         <i class="el-icon-menu"></i>
         <span slot="title">FCFS</span>
       </el-menu-item>
-      <el-menu-item index="2" route="round-robin">
+      <el-menu-item index="3" route="/round-robin">
         <i class="el-icon-menu"></i>
         <span slot="title">Round Robin</span>
       </el-menu-item>
-      <el-menu-item index="3" route="srtn">
+      <el-menu-item index="4" route="/srtn">
         <i class="el-icon-menu"></i>
         <span slot="title">SRTN</span>
       </el-menu-item>
-      <el-menu-item index="4" route="three-level-queue">
+      <el-menu-item index="5" route="/three-level-queue">
         <i class="el-icon-menu"></i>
         <span slot="title">Three Level</span>
       </el-menu-item>

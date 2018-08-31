@@ -55,6 +55,16 @@ export default {
 	position: relative;
 	text-align: center;
 	margin-bottom: 40px;
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-ms-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+}
+
+.gantt-chart-item:hover{
+	opacity: 0.8;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 .gantt-chart-item .time{

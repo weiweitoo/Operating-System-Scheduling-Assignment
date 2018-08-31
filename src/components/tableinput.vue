@@ -78,13 +78,14 @@ export default {
   data: function(){
     return {
       NewProcess: {
-        Name: '',
+        Name: 'Process 0',
         BurstTime: 0,
         ArrivalTime: 0,
         Priority : 0,
       },
       Process: [],
-      QuantumNum : 0
+      QuantumNum : 0,
+      ProcessCounter : 0
     }
   },
   props:['Quantum'],
@@ -93,15 +94,24 @@ export default {
   },
   methods: {
     createProcess: function () {
+      this.ProcessCounter++;
       this.Process.push(this.NewProcess)
-      this.NewProcess = {Name: '', BurstTime: 0, ArrivalTime: 0, Priority: 0}
+      this.NewProcess = {Name: 'Process '+this.ProcessCounter, BurstTime: 0, ArrivalTime: 0, Priority: 0}
+      this.successNotification();
     },
     deletePerocess: function (index) {
       this.Process.splice(index, 1)
+      this.successNotification();
     },
     onClickButton: function (event) {
       this.$emit('clicked', this.Process, this.QuantumNum)
-    }
+    },
+    successNotification() {
+      this.$message({
+        message: 'Success',
+        type: 'success'
+      });
+    },
   }
 }
 </script>
