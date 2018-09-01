@@ -1,9 +1,9 @@
 <template>
 	<div id="gantt-chart" class="custom-scrollbar">
 		<div v-for="cell in tableData" class="gantt-chart-item">
-			{{ cell.name }}
+			{{ cell.Name }}
 			<div class="time">
-				{{ cell.endTime }}
+				{{ cell.EndTime }}
 			</div>
 		</div>
 	</div>
@@ -14,27 +14,56 @@ export default {
   name: 'piebar',
   data: function() {
     return {
-	    totalTime : 0,
+	    TotalTime : 0,
     }
   },
-  props:['data'],
+  props:['pieBarData'],
   computed:{
   	tableData: function(){
-  		return this.data;
+  		return this.pieBarData;
   	}
   },
   mounted(){
-  	// Get total endtime
-  	this.totalTime += this.data[this.data.length-1].endTime;
-  	var block = document.getElementsByClassName("gantt-chart-item");
-  	for (var i = 0; i < block.length; i++) {
-  		block[i].style.backgroundColor = this.randomLightColor();
-  		block[i].style.width = 70 + (this.data[i].burstTime/this.totalTime * 60) + "px";
-  	}
+  	this.UpdatePieBar(this.pieBarData);
   },
   methods:{
   	randomLightColor : function(){
   		return "rgb(" + ((Math.random() * 140) + 70) + "," + ((Math.random() * 140) + 70) + "," + ((Math.random() * 140) + 70) + ")";
+  	},
+  	UpdatePieBar : function(newData){
+	  	if(newData.length>0){
+	  		// Get total endtime
+		  	this.TotalTime += newData[newData.length-1].EndTime;
+		  	// Update Piebar dynamically
+		  	var block = document.getElementsByClassName("gantt-chart-item");
+		  	setTimeout(function(){
+  		  	for (var i = 0; i < block.length; i++) {
+  		  		block[i].style.width = 70 + (newData[i].BurstTime/this.TotalTime * 60) + "px";
+  					if(newData[i].Name === "X"){
+  						block[i].style.backgroundColor = "#333333";	
+  					}
+  					else{
+  						block[i].style.backgroundColor = this.randomLightColor();
+  					}
+  		  	}
+  		  	this.successNotification();
+		  	}.bind(this),0)
+	  	}
+  	},
+    successNotification() {
+      this.$message({
+        message: 'Success',
+        type: 'success'
+      });
+    },
+  },
+  watch:{
+  	pieBarData: {
+  		handler : function(newVal, oldVal){
+	  		console.log(newVal);
+	  		this.UpdatePieBar(newVal);
+	  	},
+	  	immediate: false
   	}
   }
 }

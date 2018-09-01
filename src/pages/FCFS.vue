@@ -13,7 +13,7 @@ export default {
   	return {
   		Data:[
 				{
-					'name' : 'P0',
+					'Name' : 'P0',
 					'endTime' : 4,
 					'burstTime' : 4
 				},
