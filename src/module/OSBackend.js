@@ -1,31 +1,3 @@
-var Example = [
-	{Name: "P0", BurstTime: 10, ArrivalTime: 8 , Priority: 1},
-	{Name: "P1", BurstTime: 6 , ArrivalTime: 4 , Priority: 2},
-	{Name: "P2", BurstTime: 8 , ArrivalTime: 10, Priority: 3},
-	{Name: "P3", BurstTime: 2 , ArrivalTime: 4 , Priority: 4},
-	{Name: "P4", BurstTime: 12, ArrivalTime: 0 , Priority: 5}
-];//LeftTime
-
-var AssignmentExample = [
-	{Name: "P0", BurstTime: 6 , ArrivalTime: 0 , Priority: 3},
-	{Name: "P1", BurstTime: 4 , ArrivalTime: 1 , Priority: 3},
-	{Name: "P2", BurstTime: 6 , ArrivalTime: 5 , Priority: 1},
-	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Priority: 1},
-	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Priority: 5},
-	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Priority: 6}
-];//LeftTime
-
-//Input for Round Robin
-var ExampleRR = [
-	{Name: "P0", BurstTime: 6 , ArrivalTime: 0 , Priority: 3},
-	{Name: "P1", BurstTime: 4 , ArrivalTime: 1 , Priority: 3},
-	{Name: "P2", BurstTime: 6 , ArrivalTime: 5 , Priority: 1},
-	{Name: "P3", BurstTime: 6 , ArrivalTime: 6 , Priority: 1},
-	{Name: "P4", BurstTime: 6 , ArrivalTime: 7 , Priority: 5},
-	{Name: "P5", BurstTime: 6 , ArrivalTime: 8 , Priority: 6}
-];//LeftTime, StopTime
-
-
 function Process_Repacker(Input, InQ = 0)
 {
 	var ProQueue;
@@ -56,6 +28,10 @@ export function Process_FCFS(Input)
 	var ProQueue = Process_Repacker(Input);
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
+	var ProDummy = {Name: "%{Dummy}%", ProcessedTime: 0};
+	
+	var FirstTime = 0;
+	var NeverFirst = true;
 	
 	var TimeFlow = 0;
 	var RunTime = 0;
@@ -99,6 +75,14 @@ export function Process_FCFS(Input)
 				}
 			}
 			CurrentPro = TempIndex;
+			if (CurrentPro >= 0)
+			{
+				if (NeverFirst)
+				{
+					FirstTime = TimeFlow;
+					NeverFirst = false;
+				}
+			}
 		}
 		//Pre-empt action
 		var Preempted = false;
@@ -131,7 +115,12 @@ export function Process_FCFS(Input)
 		{
 			ProQueue.Processes[CurrentPro].LeftTime -= 1;
 			RunTime += 1;
-			//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
+			//Push dummy into Chart if available
+			if (ProDummy.ProcessedTime > 0)
+			{
+				ProGanC.Processes.push({Name: ProDummy.Name, EndTime: TimeFlow, ProcessedTime: ProDummy.ProcessedTime});
+				ProDummy.ProcessedTime = 0;
+			}
 			//Process complete
 			if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
 			{
@@ -143,6 +132,13 @@ export function Process_FCFS(Input)
 				ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
 				RunTime = 0;
 				CurrentPro = -1;
+			}
+		}
+		else
+		{
+			if (!NeverFirst)
+			{
+				ProDummy.ProcessedTime += 1;
 			}
 		}
 		//Time flows
@@ -162,7 +158,8 @@ export function Process_FCFS(Input)
 	var Result = {
 		Processes: ProGanC.Processes,
 		ProcessTime: ProTime.TimeDetail,
-		AverageTime: {InterTime: AvgIT, WaitTime: AvgWT}
+		AverageTime: {InterTime: AvgIT, WaitTime: AvgWT},
+		StartTime: FirstTime
 	};
 	return Result;
 }
@@ -172,6 +169,10 @@ export function Process_RR(Input, InQ)
 	var ProQueue = Process_Repacker(Input, InQ);
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
+	var ProDummy = {Name: "%{Dummy}%", ProcessedTime: 0};
+	
+	var FirstTime = 0;
+	var NeverFirst = true;
 	
 	var TimeFlow = 0;
 	var RunTime = 0;
@@ -216,6 +217,14 @@ export function Process_RR(Input, InQ)
 				}
 			}
 			CurrentPro = TempIndex;
+			if (CurrentPro >= 0)
+			{
+				if (NeverFirst)
+				{
+					FirstTime = TimeFlow;
+					NeverFirst = false;
+				}
+			}
 		}
 		//Run process
 		if (CurrentPro >= 0)
@@ -223,7 +232,12 @@ export function Process_RR(Input, InQ)
 			ProQueue.Processes[CurrentPro].LeftTime -= 1;
 			QuantumCount -= 1;
 			RunTime += 1;
-			//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
+			//Push dummy into Chart if available
+			if (ProDummy.ProcessedTime > 0)
+			{
+				ProGanC.Processes.push({Name: ProDummy.Name, EndTime: TimeFlow, ProcessedTime: ProDummy.ProcessedTime});
+				ProDummy.ProcessedTime = 0;
+			}
 			//Process complete
 			if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
 			{
@@ -282,6 +296,13 @@ export function Process_RR(Input, InQ)
 				RunTime = 0;
 			}
 		}
+		else
+		{
+			if (!NeverFirst)
+			{
+				ProDummy.ProcessedTime += 1;
+			}
+		}
 		//Time flows
 		TimeFlow += 1;
 	}
@@ -299,7 +320,8 @@ export function Process_RR(Input, InQ)
 	var Result = {
 		Processes: ProGanC.Processes,
 		ProcessTime: ProTime.TimeDetail,
-		AverageTime: {InterTime: AvgIT, WaitTime: AvgWT}
+		AverageTime: {InterTime: AvgIT, WaitTime: AvgWT},
+		StartTime: FirstTime
 	};
 	return Result;
 }
@@ -309,6 +331,10 @@ export function Process_SRTN(Input)
 	var ProQueue = Process_Repacker(Input);
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
+	var ProDummy = {Name: "%{Dummy}%", ProcessedTime: 0};
+	
+	var FirstTime = 0;
+	var NeverFirst = true;
 	
 	var TimeFlow = 0;
 	var RunTime = 0;
@@ -362,6 +388,14 @@ export function Process_SRTN(Input)
 				}
 			}
 			CurrentPro = TempIndex;
+			if (CurrentPro >= 0)
+			{
+				if (NeverFirst)
+				{
+					FirstTime = TimeFlow;
+					NeverFirst = false;
+				}
+			}
 		}
 		//Pre-empt action
 		var Preempted = false;
@@ -405,7 +439,12 @@ export function Process_SRTN(Input)
 		{
 			ProQueue.Processes[CurrentPro].LeftTime -= 1;
 			RunTime += 1;
-			//console.log(ProQueue.Processes[CurrentPro].Name,ProQueue.Processes[CurrentPro].LeftTime,TimeFlow);
+			//Push dummy into Chart if available
+			if (ProDummy.ProcessedTime > 0)
+			{
+				ProGanC.Processes.push({Name: ProDummy.Name, EndTime: TimeFlow, ProcessedTime: ProDummy.ProcessedTime});
+				ProDummy.ProcessedTime = 0;
+			}
 			//Process complete
 			if (ProQueue.Processes[CurrentPro].LeftTime <= 0)
 			{
@@ -417,6 +456,13 @@ export function Process_SRTN(Input)
 				ProTime.TimeDetail.push({Name: OName, InterTime: OInter, WaitTime: OWait});
 				RunTime = 0;
 				CurrentPro = -1;
+			}
+		}
+		else
+		{
+			if (!NeverFirst)
+			{
+				ProDummy.ProcessedTime += 1;
 			}
 		}
 		//Time flows
@@ -436,7 +482,8 @@ export function Process_SRTN(Input)
 	var Result = {
 		Processes: ProGanC.Processes,
 		ProcessTime: ProTime.TimeDetail,
-		AverageTime: {InterTime: AvgIT, WaitTime: AvgWT}
+		AverageTime: {InterTime: AvgIT, WaitTime: AvgWT},
+		StartTime: FirstTime
 	};
 	return Result;
 }
