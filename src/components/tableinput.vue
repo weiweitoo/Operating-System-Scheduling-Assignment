@@ -2,17 +2,17 @@
   <div>
     <el-row type="flex" justify="center" class="padding-20">
       <el-col :offset="4" :span="18">
-        <el-form ref="form" :model="NewProcess" :inline="true" label-position="left" label-width="100px">
-          <el-form-item label="Name:">
+        <el-form :model="NewProcess" :rules="rules" :inline="true" ref="NewProcess" label-position="left" label-width="120px">
+          <el-form-item label="Name:" prop="Name">
             <el-input v-model="NewProcess.Name"></el-input>
           </el-form-item>
-          <el-form-item label="Burst Time:">
+          <el-form-item label="Burst Time:" prop="BurstTime">
             <el-input v-model="NewProcess.BurstTime"></el-input>
           </el-form-item>
-          <el-form-item label="Priority:">
+          <el-form-item label="Priority:" prop="ArrivalTime">
             <el-input v-model="NewProcess.Priority"></el-input>
           </el-form-item>
-          <el-form-item label="Arrival Time:">
+          <el-form-item label="Arrival Time:" prop="Priority">
             <el-input v-model="NewProcess.ArrivalTime"></el-input>
           </el-form-item>
           <el-form-item label="Quantum:" v-if="Quantum">
@@ -70,7 +70,6 @@
   </div>
 
 </template>
-
 <script>
 import GetAnswer from '../module/computation.js'
 export default {
@@ -78,14 +77,23 @@ export default {
   data: function(){
     return {
       NewProcess: {
-        Name: 'Process 0',
-        BurstTime: 0,
-        ArrivalTime: 0,
-        Priority : 0,
+        Name: 'P0',
+        BurstTime: 1,
+        ArrivalTime: 1,
+        Priority : 1,
       },
       Process: [],
-      QuantumNum : 0,
-      ProcessCounter : 0
+      QuantumNum : 1,
+      ProcessCounter : 0,
+      rules: {
+        Name: [
+          { required: true, message: 'Required', trigger: 'blur' },
+          { min: 1, max: 6, message: 'At least 1 to 6 character', trigger: 'blur' }
+        ],
+        BurstTime:[{ required: true, message: 'Required', trigger: 'blur' }],
+        ArrivalTime:[{ required: true, message: 'Required', trigger: 'blur' }],
+        Priority:[{ required: true, message: 'Required', trigger: 'blur' }],
+      }
     }
   },
   props:['Quantum'],
@@ -94,10 +102,17 @@ export default {
   },
   methods: {
     createProcess: function () {
-      this.ProcessCounter++;
-      this.Process.push(this.NewProcess)
-      this.NewProcess = {Name: 'Process '+this.ProcessCounter, BurstTime: 0, ArrivalTime: 0, Priority: 0}
-      this.successNotification();
+      this.$refs["NewProcess"].validate((valid) => {
+        if (valid) {
+          this.ProcessCounter++;
+          this.Process.push(this.NewProcess)
+          this.NewProcess = {Name: 'P'+this.ProcessCounter, BurstTime: 1, ArrivalTime: 1, Priority: 1}
+          this.successNotification();
+        }
+        else{
+          this.$message.error('Invalid Input');
+        }
+      });
     },
     deletePerocess: function (index) {
       this.Process.splice(index, 1)
@@ -112,7 +127,7 @@ export default {
         type: 'success'
       });
     },
-  }
+  },
 }
 </script>
 

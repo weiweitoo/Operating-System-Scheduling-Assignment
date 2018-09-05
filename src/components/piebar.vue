@@ -1,5 +1,6 @@
 <template>
 	<div id="gantt-chart" class="custom-scrollbar">
+		<span class="start-time" v-if="ShowingResult">{{ StartTime }}</span>
 		<div v-for="cell in tableData" class="gantt-chart-item">
 			{{ cell.Name }}
 			<div class="time">
@@ -15,16 +16,17 @@ export default {
   data: function() {
     return {
 	    TotalTime : 0,
+	    ShowingResult : false
     }
   },
-  props:['pieBarData'],
+  props:['PieBarData','StartTime'],
   computed:{
   	tableData: function(){
-  		return this.pieBarData;
+  		return this.PieBarData;
   	}
   },
   mounted(){
-  	this.UpdatePieBar(this.pieBarData);
+  	this.UpdatePieBar(this.PieBarData);
   },
   methods:{
   	randomLightColor : function(){
@@ -38,9 +40,10 @@ export default {
 		  	var block = document.getElementsByClassName("gantt-chart-item");
 		  	setTimeout(function(){
   		  	for (var i = 0; i < block.length; i++) {
-  		  		block[i].style.width = 70 + (newData[i].BurstTime/this.TotalTime * 60) + "px";
-  					if(newData[i].Name === "X"){
-  						block[i].style.backgroundColor = "#333333";	
+  		  		block[i].style.width = 70 + (newData[i].ProcessedTime/this.TotalTime * 60) + "px";
+  					if(newData[i].Name === "%{Dummy}%"){
+  						newData[i].Name = "-";
+  						block[i].style.backgroundColor = "#444444";	
   					}
   					else{
   						block[i].style.backgroundColor = this.randomLightColor();
@@ -48,6 +51,7 @@ export default {
   		  	}
   		  	this.successNotification();
 		  	}.bind(this),0)
+		  	this.ShowingResult = true;
 	  	}
   	},
     successNotification() {
@@ -58,9 +62,8 @@ export default {
     },
   },
   watch:{
-  	pieBarData: {
+  	PieBarData: {
   		handler : function(newVal, oldVal){
-	  		console.log(newVal);
 	  		this.UpdatePieBar(newVal);
 	  	},
 	  	immediate: false
@@ -75,6 +78,13 @@ export default {
 	overflow-x: scroll;
   white-space: nowrap;
   padding: 20px 40px 0 40px;
+  position: relative;
+}
+
+.start-time{
+	position: absolute;
+	left: 40px;
+	bottom: 15px;
 }
 
 .gantt-chart-item{
@@ -103,16 +113,6 @@ export default {
 	color: black;
 	transform: translateX(50%);
 }
-
-/*.custom-scrollbar{
-	margin-left: 30px;
-	float: left;
-	height: 300px;
-	width: 65px;
-	background: #F5F5F5;
-	overflow-y: scroll;
-	margin-bottom: 25px;
-}*/
 
 .custom-scrollbar::-webkit-scrollbar-track{
 	background-color: transparent;

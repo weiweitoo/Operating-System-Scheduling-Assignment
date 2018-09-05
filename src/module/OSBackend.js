@@ -490,7 +490,7 @@ export function Process_SRTN(Input)
 
 export function Three_level_queue(Input){
 
-	var threeLevelQueue = Input;
+	var threeLevelQueue = Process_Repacker(Input);
 	
 	var threeLevelQueue1 = jQuery.extend(true, {}, threeLevelQueue);
 	var threeLevelQueue2 = jQuery.extend(true, {}, threeLevelQueue);
@@ -498,7 +498,6 @@ export function Three_level_queue(Input){
 	var queue1 = {Processes: [], Quantum: 2};
 	var queue2 = {Processes: []};
 	var queue3 = {Processes: []};
-
 	for(var i=0;i<threeLevelQueue.Processes.length;i++){
 		if(threeLevelQueue.Processes[i].Priority <= 2){
 			queue1.Processes.push(threeLevelQueue1.Processes[i]);
@@ -508,22 +507,20 @@ export function Three_level_queue(Input){
 			queue3.Processes.push(threeLevelQueue3.Processes[i]);
 		}
 	}
+	
 	var totalLength = 0;
 	for(var n=0; n<threeLevelQueue.Processes.length;n++){
 		totalLength += threeLevelQueue.Processes[n].BurstTime;
 	}
 
-
-
-
 	for (var j=0;j<totalLength;j++){
-		var dummyQ1 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 2};
+		var dummyQ1 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 2};
 		queue1.Processes.push(dummyQ1);
 		
-		var dummyQ2 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 4};
+		var dummyQ2 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 4};
 		queue2.Processes.push(dummyQ2);
 
-		var dummyQ3 =  {Name: "X", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 6};
+		var dummyQ3 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 6};
 		queue3.Processes.push(dummyQ3);
 	}
 
@@ -539,10 +536,8 @@ export function Three_level_queue(Input){
 		}
 	}
 
-
 	// var returnQ1 = Process_RR(squeue1);
 	return [Process_RR(queue1), Process_FCFS(queue2), Process_FCFS(queue3)];
-
 }
 
 export default {Process_FCFS, Process_RR, Process_SRTN, Three_level_queue}

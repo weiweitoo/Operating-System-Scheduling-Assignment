@@ -1,6 +1,6 @@
 <template>
 	<el-col :span="21">
-		<pie-bar :data="Data"></pie-bar>
+		<pie-bar v-bind:PieBarData="Data" v-bind:StartTime="StartTime"></pie-bar>
 		<table-input @clicked="getInput"></table-input>
 	</el-col>
 </template>
@@ -9,31 +9,17 @@
 import {Process_FCFS} from "./../module/OSBackend.js";
 export default {
   name: 'FCFS',
-  data: function(){
+	data: function(){
   	return {
-  		Data:[
-				{
-					'Name' : 'P0',
-					'endTime' : 4,
-					'burstTime' : 4
-				},
-				{
-					'name' : 'P2',
-					'endTime' : 7,
-					'burstTime' : 3
-				},
-				{
-					'name' : 'P3',
-					'endTime' : 12,
-					'burstTime' : 5
-				}
-			],
+  		Data:[],
+  		StartTime:0,
   	}
   },
   methods:{
-  	getInput(value,quantum) {
-			// Process_RR(value,quantum);
-			console.log(value);
+  	getInput(value) {
+  		var Result = Process_FCFS(value);
+			this.Data = Result.Processes;
+			this.StartTime = Result.StartTime;
     }
   }
 }
