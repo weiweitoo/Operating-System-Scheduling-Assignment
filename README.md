@@ -1,6 +1,19 @@
-# operatingsystem
+# Operating System
 
-> A Vue.js project
+## Tech Stack
+1. Javascript
+2. VueJS
+
+## Team Member
+1. Oo Jin Heng 
+2. Ching June Hao 1161102454
+3. Too Seng Wei 1161100643
+
+---
+
+## Requirement
+1. [Well-installed NodeJs](https://www.taniarascia.com/how-to-install-and-use-node-js-and-npm-mac-and-windows/) and able to run npm command from terminal
+2. Well-installed browser(We use Chrome during development) 
 
 ## Build Setup
 
@@ -8,14 +21,11 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
+# by default it serve at localhost:8080
+npm start
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+# Visit it 
+# Go to your localhost:8080, if it does not work on localhost:8080, check your terminal, it might serve at other port
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+

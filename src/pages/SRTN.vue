@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Process_SRTN} from "./../module/OSBackend.js";
+import {Process_SRTN} from "./../module/computation.js";
 export default {
   name: 'SRTN',
 	data: function(){

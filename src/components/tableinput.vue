@@ -71,7 +71,6 @@
 
 </template>
 <script>
-import GetAnswer from '../module/computation.js'
 export default {
   name: 'tableinput',
   data: function(){

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Process_RR} from "./../module/OSBackend.js";
+import {Process_RR} from "./../module/computation.js";
 export default {
   name: 'RoundRobin',
   data: function(){
