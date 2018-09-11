@@ -5,7 +5,7 @@
 2. VueJS
 
 ## Team Member
-1. Oo Jin Heng 
+1. Oo Jin Heng 1161303917
 2. Ching June Hao 1161102454
 3. Too Seng Wei 1161100643
 
