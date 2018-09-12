@@ -420,7 +420,7 @@ export function Process_SRTN(Input)
 				{
 					var CPio = ProQueue.Processes[i].Priority;
 					var OPio = ProQueue.Processes[CurrentPro].Priority;
-					if (CPio <= OPio)
+					if (CPio < OPio)
 					{
 						Preempted = true;
 						CurrentPro = i;
