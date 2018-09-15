@@ -25,7 +25,7 @@ function Process_Repacker(Input, InQ = 0)
 
 export function Process_FCFS(Input)
 {
-	var ProQueue = Process_Repacker(Input);
+	var ProQueue = Input;
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
 	var ProDummy = {Name: "%{Dummy}%", ProcessedTime: 0};
@@ -166,7 +166,7 @@ export function Process_FCFS(Input)
 
 export function Process_RR(Input, InQ)
 {
-	var ProQueue = Process_Repacker(Input, InQ);
+	var ProQueue = Input;
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
 	var ProDummy = {Name: "%{Dummy}%", ProcessedTime: 0};
@@ -328,7 +328,7 @@ export function Process_RR(Input, InQ)
 
 export function Process_SRTN(Input)
 {
-	var ProQueue = Process_Repacker(Input);
+	var ProQueue = Input;
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
 	var ProDummy = {Name: "%{Dummy}%", ProcessedTime: 0};
@@ -488,6 +488,8 @@ export function Process_SRTN(Input)
 	return Result;
 }
 
+
+
 export function Three_level_queue(Input){
 
 	var threeLevelQueue = Process_Repacker(Input);
@@ -495,9 +497,11 @@ export function Three_level_queue(Input){
 	var threeLevelQueue1 = jQuery.extend(true, {}, threeLevelQueue);
 	var threeLevelQueue2 = jQuery.extend(true, {}, threeLevelQueue);
 	var threeLevelQueue3 = jQuery.extend(true, {}, threeLevelQueue);
+
 	var queue1 = {Processes: [], Quantum: 2};
 	var queue2 = {Processes: []};
 	var queue3 = {Processes: []};
+
 	for(var i=0;i<threeLevelQueue.Processes.length;i++){
 		if(threeLevelQueue.Processes[i].Priority <= 2){
 			queue1.Processes.push(threeLevelQueue1.Processes[i]);
@@ -507,6 +511,7 @@ export function Three_level_queue(Input){
 			queue3.Processes.push(threeLevelQueue3.Processes[i]);
 		}
 	}
+
 	
 	var totalLength = 0;
 	for(var n=0; n<threeLevelQueue.Processes.length;n++){
@@ -526,17 +531,16 @@ export function Three_level_queue(Input){
 
 	for(var q2=0;q2<queue2.Processes.length;q2++){
 		if(queue2.Processes[q2].Priority < 3){
-			queue2.Processes[q2].Name = "X";
+			queue2.Processes[q2].Name = "%{Dummy}%";
 		}
 	}
 
 	for(var q3=0;q3<queue3.Processes.length;q3++){
 		if(queue3.Processes[q3].Priority < 5){
-			queue3.Processes[q3].Name = "X";
+			queue3.Processes[q3].Name = "%{Dummy}%";
 		}
 	}
 
-	// var returnQ1 = Process_RR(squeue1);
 	return [Process_RR(queue1), Process_FCFS(queue2), Process_FCFS(queue3)];
 }
 
