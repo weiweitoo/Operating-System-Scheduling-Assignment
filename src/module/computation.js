@@ -1,4 +1,4 @@
-function Process_Repacker(Input, InQ = 0)
+export function Process_Repacker(Input, InQ = 0)
 {
 	var ProQueue;
 	if (InQ <= 0)
@@ -544,4 +544,4 @@ export function Three_level_queue(Input){
 	return [Process_RR(queue1), Process_FCFS(queue2), Process_FCFS(queue3)];
 }
 
-export default {Process_FCFS, Process_RR, Process_SRTN, Three_level_queue}
+export default {Process_FCFS, Process_RR, Process_SRTN, Three_level_queue, Process_Repacker}

@@ -1,7 +1,7 @@
 <template>
 	<div id="gantt-chart" class="custom-scrollbar">
 		<span class="start-time" v-if="ShowingResult">{{ StartTime }}</span>
-		<div v-for="cell in tableData" class="gantt-chart-item">
+		<div v-for="cell in tableData" :class="'gantt-chart-item'+UniqueID">
 			{{ cell.Name }}
 			<div class="time">
 				{{ cell.EndTime }}
@@ -16,7 +16,8 @@ export default {
   data: function() {
     return {
 	    TotalTime : 0,
-	    ShowingResult : false
+	    ShowingResult : false,
+	    UniqueID : ''
     }
   },
   props:['PieBarData','StartTime'],
@@ -27,6 +28,7 @@ export default {
   },
   mounted(){
   	this.UpdatePieBar(this.PieBarData);
+  	this.UniqueID = this.generateUniqueID();
   },
   methods:{
   	randomLightColor : function(){
@@ -37,7 +39,8 @@ export default {
 	  		// Get total endtime
 		  	this.TotalTime += newData[newData.length-1].EndTime;
 		  	// Update Piebar dynamically
-		  	var block = document.getElementsByClassName("gantt-chart-item");
+		  	var block = document.getElementsByClassName("gantt-chart-item"+this.UniqueID);
+		  	console.log(block);
 		  	setTimeout(function(){
   		  	for (var i = 0; i < block.length; i++) {
   		  		block[i].style.width = 70 + (newData[i].ProcessedTime/this.TotalTime * 60) + "px";
@@ -54,12 +57,15 @@ export default {
 		  	this.ShowingResult = true;
 	  	}
   	},
-    successNotification() {
+    successNotification: function() {
       this.$message({
         message: 'Success',
         type: 'success'
       });
     },
+    generateUniqueID: function() {
+      return '_' + Math.random().toString(36).substr(2, 9);
+    }
   },
   watch:{
   	PieBarData: {
@@ -87,7 +93,7 @@ export default {
 	bottom: 15px;
 }
 
-.gantt-chart-item{
+[class^='gantt-chart-item']{
 	color : white;	
 	padding: 10px 0px;
 	display: inline-block;
@@ -101,12 +107,12 @@ export default {
 	transition: all 0.2s ease-out;
 }
 
-.gantt-chart-item:hover{
+[class^='gantt-chart-item']:hover{
 	opacity: 0.8;
 	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-.gantt-chart-item .time{
+[class^='gantt-chart-item'] .time{
 	position : absolute;
 	bottom: -25px;
 	right : 0;

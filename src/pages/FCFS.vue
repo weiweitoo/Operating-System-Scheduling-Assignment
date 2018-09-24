@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Process_FCFS} from "./../module/computation.js";
+import {Process_Repacker,Process_FCFS} from "./../module/computation.js";
 export default {
   name: 'FCFS',
 	data: function(){
@@ -17,7 +17,7 @@ export default {
   },
   methods:{
   	getInput(value) {
-  		var Result = Process_FCFS(value);
+  		var Result = Process_FCFS(Process_Repacker(value));
 			this.Data = Result.Processes;
 			this.StartTime = Result.StartTime;
     }

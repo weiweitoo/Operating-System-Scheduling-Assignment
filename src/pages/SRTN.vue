@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Process_SRTN} from "./../module/computation.js";
+import {Process_Repacker,Process_SRTN} from "./../module/computation.js";
 export default {
   name: 'SRTN',
 	data: function(){
@@ -17,7 +17,7 @@ export default {
   },
   methods:{
   	getInput(value) {
-  		var Result = Process_SRTN(value);
+  		var Result = Process_SRTN(Process_Repacker(value));
 			this.Data = Result.Processes;
 			this.StartTime = Result.StartTime;
     }

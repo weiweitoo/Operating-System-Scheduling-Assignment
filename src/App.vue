@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <router-view></router-view>
+    <el-col :span="21" :offset="3">
+    	<router-view></router-view>
+    </el-col>
   </div>
 </template>
 

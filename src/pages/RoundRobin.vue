@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Process_RR} from "./../module/computation.js";
+import {Process_Repacker,Process_RR} from "./../module/computation.js";
 export default {
   name: 'RoundRobin',
   data: function(){
@@ -17,7 +17,7 @@ export default {
   },
   methods:{
   	getInput(value,quantum) {
-  		var Result = Process_RR(value,quantum);
+  		var Result = Process_RR(Process_Repacker(value,quantum));
 			this.Data = Result.Processes;
 			this.StartTime = Result.StartTime;
     }

@@ -97,7 +97,6 @@ export default {
   },
   props:['Quantum'],
   mounted(){
-    console.log(GetAnswer());
   },
   methods: {
     createProcess: function () {

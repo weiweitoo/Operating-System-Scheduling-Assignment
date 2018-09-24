@@ -51,5 +51,6 @@ export default {
 	#side-nav-bar{
 		height: 100vh;
 		background: #545c64;
+    position: fixed;
 	}
 </style>
