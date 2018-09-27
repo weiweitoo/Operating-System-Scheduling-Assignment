@@ -1,5 +1,4 @@
-export function Process_Repacker(Input, InQ = 0)
-{
+export function Process_Repacker(Input, InQ = 0){
 	var ProQueue;
 	if (InQ <= 0)
 	{
@@ -23,8 +22,7 @@ export function Process_Repacker(Input, InQ = 0)
 	return ProQueue
 }
 
-export function Process_FCFS(Input)
-{
+export function Process_FCFS(Input){
 	var ProQueue = Input;
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
@@ -164,8 +162,7 @@ export function Process_FCFS(Input)
 	return Result;
 }
 
-export function Process_RR(Input, InQ)
-{
+export function Process_RR(Input, InQ){
 	var ProQueue = Input;
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
@@ -326,8 +323,7 @@ export function Process_RR(Input, InQ)
 	return Result;
 }
 
-export function Process_SRTN(Input)
-{
+export function Process_SRTN(Input){
 	var ProQueue = Input;
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
@@ -487,7 +483,6 @@ export function Process_SRTN(Input)
 	};
 	return Result;
 }
-
 
 
 export function Three_level_queue(Input){
