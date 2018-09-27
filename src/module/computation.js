@@ -21,7 +21,7 @@ export function Process_Repacker(Input, InQ = 0){
 	}
 	return ProQueue
 }
-
+//First Come First Server
 export function Process_FCFS(Input){
 	var ProQueue = Input;
 	var ProGanC = {Processes: []};
@@ -161,7 +161,7 @@ export function Process_FCFS(Input){
 	};
 	return Result;
 }
-
+//Round Robin
 export function Process_RR(Input, InQ){
 	var ProQueue = Input;
 	var ProGanC = {Processes: []};
@@ -322,7 +322,7 @@ export function Process_RR(Input, InQ){
 	};
 	return Result;
 }
-
+//Short First
 export function Process_SRTN(Input){
 	var ProQueue = Input;
 	var ProGanC = {Processes: []};
@@ -484,7 +484,7 @@ export function Process_SRTN(Input){
 	return Result;
 }
 
-
+//Three Level Queue
 export function Three_level_queue(Input){
 
 	var threeLevelQueue = Process_Repacker(Input);
