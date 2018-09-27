@@ -17,7 +17,8 @@ export default {
     return {
 	    TotalTime : 0,
 	    ShowingResult : false,
-	    UniqueID : ''
+	    UniqueID : '',
+	    testData:''
     }
   },
   props:['PieBarData','StartTime'],
