@@ -8,6 +8,7 @@
 1. Oo Jin Heng 1161303917
 2. Ching June Hao 1161102454
 3. Too Seng Wei 1161100643
+4. Alex Woon Jun Rong 1161100641
 
 ---
 
@@ -27,5 +28,6 @@ npm start
 # Visit it 
 # Go to your localhost:8080, if it does not work on localhost:8080, check your terminal, it might serve at other port
 ```
+
 
 
