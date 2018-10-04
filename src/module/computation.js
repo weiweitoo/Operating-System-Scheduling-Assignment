@@ -167,7 +167,6 @@ export function Process_RR(Input, InQ){
 	var ProGanC = {Processes: []};
 	var ProTime = {TimeDetail: []};
 	var ProDummy = {Name: "%{Dummy}%", ProcessedTime: 0};
-	
 	var FirstTime = 0;
 	var NeverFirst = true;
 	
@@ -207,7 +206,7 @@ export function Process_RR(Input, InQ){
 					var OStopTime = ProQueue.Processes[TempIndex].StopTime;
 					if (CStopTime <= OStopTime)
 					{
-						TempPio = IPio
+						TempPio = IPio;
 						TempIndex = i;
 					}
 					continue;
@@ -487,7 +486,7 @@ export function Process_SRTN(Input){
 //Three Level Queue
 export function Three_level_queue(Input){
 
-	var threeLevelQueue = Process_Repacker(Input);
+	var threeLevelQueue = Process_Repacker(Input, 2);
 	
 	var threeLevelQueue1 = jQuery.extend(true, {}, threeLevelQueue);
 	var threeLevelQueue2 = jQuery.extend(true, {}, threeLevelQueue);
@@ -510,17 +509,17 @@ export function Three_level_queue(Input){
 	
 	var totalLength = 0;
 	for(var n=0; n<threeLevelQueue.Processes.length;n++){
-		totalLength += threeLevelQueue.Processes[n].BurstTime;
+		totalLength += parseInt(threeLevelQueue.Processes[n].BurstTime);
 	}
-
+	console.log(totalLength);
 	for (var j=0;j<totalLength;j++){
-		var dummyQ1 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 2};
+		var dummyQ1 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 3};
 		queue1.Processes.push(dummyQ1);
 		
-		var dummyQ2 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 4};
+		var dummyQ2 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 5};
 		queue2.Processes.push(dummyQ2);
 
-		var dummyQ3 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 6};
+		var dummyQ3 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 7};
 		queue3.Processes.push(dummyQ3);
 	}
 
@@ -535,8 +534,7 @@ export function Three_level_queue(Input){
 			queue3.Processes[q3].Name = "%{Dummy}%";
 		}
 	}
-
-	return [Process_RR(queue1), Process_FCFS(queue2), Process_FCFS(queue3)];
+	return [Process_RR(queue1,2), Process_FCFS(queue2), Process_FCFS(queue3)];
 }
 
 export default {Process_FCFS, Process_RR, Process_SRTN, Three_level_queue, Process_Repacker}
