@@ -513,13 +513,13 @@ export function Three_level_queue(Input){
 	}
 	console.log(totalLength);
 	for (var j=0;j<totalLength;j++){
-		var dummyQ1 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 3};
+		var dummyQ1 = {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 3};
 		queue1.Processes.push(dummyQ1);
 		
-		var dummyQ2 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 5};
+		var dummyQ2 = {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 5};
 		queue2.Processes.push(dummyQ2);
 
-		var dummyQ3 =  {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 7};
+		var dummyQ3 = {Name: "%{Dummy}%", BurstTime: 0 , LeftTime: 0, ArrivalTime: j, Priority: 7};
 		queue3.Processes.push(dummyQ3);
 	}
 
